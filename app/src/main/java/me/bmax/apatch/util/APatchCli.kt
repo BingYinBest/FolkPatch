@@ -419,7 +419,7 @@ private fun bytesToHex(bytes: ByteArray): String {
     return bytes.joinToString("") { "%02x".format(it) }
 }
 
-fun verifyAppSignature(validSignature: String): 
+fun verifyAppSignature(validSignature: String): Boolean { 
 return true
 }
 
