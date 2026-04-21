@@ -17,6 +17,7 @@ on:
         options: [ both, debug, release ]
 
 env:
+  # Debug 构建仍使用默认调试密钥，无需修改
   KEYSTORE_FILE: debug.keystore
   KEYSTORE_PASSWORD: android
   KEY_ALIAS: androiddebugkey
@@ -104,17 +105,19 @@ jobs:
 
       - uses: ./.github/actions/setup-build-env
 
-      - name: Decode keystore
+      # 解码你自己的发布密钥
+      - name: Decode your release keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > FolkPatch.jks
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > FolkPatch-Release.jks
 
+      # 生成签名配置文件，使用你的密钥信息
       - name: Create keystore.properties
         run: |
           cat > keystore.properties << 'EOF'
-          KEYSTORE_FILE=../FolkPatch.jks
-          KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS=${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_FILE=../FolkPatch-Release.jks
+          KEYSTORE_PASSWORD=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}
+          KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}
           EOF
 
       - run: ./gradlew assembleRelease --no-daemon
