@@ -140,7 +140,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "me.yuki.folk"
+        applicationId = "com.hicorenational.antifraud"
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = managerVersionCode
